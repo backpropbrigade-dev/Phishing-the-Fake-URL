@@ -1,0 +1,2578 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EduDrift — Student Drift Detection</title>
+<link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="enhanced-features.css">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+</head>
+<body>
+<!-- Animated Background -->
+<div class="animated-bg"></div>
+
+<div id="login-page" class="login-page">
+
+  <!-- Particle canvas -->
+  <canvas id="particle-canvas" class="particle-canvas"></canvas>
+
+  <!-- Full-screen login layout -->
+  <div class="login-fullscreen">
+
+    <!-- LEFT PANEL -->
+    <div class="lp-left">
+      <!-- Mesh gradient blobs -->
+      <div class="blob blob-1"></div>
+      <div class="blob blob-2"></div>
+      <div class="blob blob-3"></div>
+
+      <!-- Top brand -->
+      <div class="lp-brand">
+        <div class="lp-brand-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <path d="M12 2L2 7l10 5 10-5-10-5z"/>
+            <path d="M2 17l10 5 10-5M2 12l10 5 10-5"/>
+          </svg>
+        </div>
+        <span class="lp-brand-name">EduDrift</span>
+        <span class="lp-live-pill"><span class="lp-live-dot"></span>Live</span>
+      </div>
+
+      <!-- Hero text -->
+      <div class="lp-hero">
+        <h1 class="lp-title">Catch the drift<br><span class="lp-title-accent">before grades do.</span></h1>
+        <p class="lp-desc">AI-powered behavioral analytics that detects student learning decline up to 2 weeks before it shows in results.</p>
+      </div>
+
+      <!-- Photo mosaic -->
+      <div class="lp-mosaic">
+        <div class="mosaic-item mosaic-tall">
+          <img src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=280&h=320&fit=crop" alt="Students collaborating">
+          <div class="mosaic-overlay"><span>Collaborative Learning</span></div>
+        </div>
+        <div class="mosaic-col">
+          <div class="mosaic-item">
+            <img src="https://images.unsplash.com/photo-1509062522246-3755977927d7?w=200&h=140&fit=crop" alt="Analytics dashboard">
+            <div class="mosaic-overlay"><span>Live Analytics</span></div>
+          </div>
+          <div class="mosaic-item">
+            <img src="https://images.unsplash.com/photo-1434030216411-0b793f4b4173?w=200&h=140&fit=crop" alt="Student studying">
+            <div class="mosaic-overlay"><span>Early Intervention</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Floating stat cards -->
+      <div class="lp-stats">
+        <div class="lp-stat-card lp-stat-cyan">
+          <div class="lp-stat-num">95%</div>
+          <div class="lp-stat-lbl">Detection Accuracy</div>
+        </div>
+        <div class="lp-stat-card lp-stat-pink">
+          <div class="lp-stat-num">1,200+</div>
+          <div class="lp-stat-lbl">Students Monitored</div>
+        </div>
+        <div class="lp-stat-card lp-stat-amber">
+          <div class="lp-stat-num">2 wks</div>
+          <div class="lp-stat-lbl">Earlier Than Grades</div>
+        </div>
+      </div>
+
+      <!-- Feature pills -->
+      <div class="lp-pills">
+        <span class="lp-pill">⚡ Real-Time Radar</span>
+        <span class="lp-pill">🔔 Predictive Alerts</span>
+        <span class="lp-pill">🎯 Role Dashboards</span>
+        <span class="lp-pill">📊 Drift Scoring</span>
+      </div>
+    </div>
+
+    <!-- RIGHT PANEL — glassmorphism login card -->
+    <div class="lp-right">
+      <div class="lp-glass-card">
+
+        <div class="lp-card-header">
+          <h2>Welcome back</h2>
+          <p>Sign in to your dashboard</p>
+        </div>
+
+        <!-- Role tabs -->
+        <div class="lp-role-tabs">
+          <button class="lp-role-tab active" data-role="student">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+            Student
+          </button>
+          <button class="lp-role-tab" data-role="faculty">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+            Faculty
+          </button>
+          <button class="lp-role-tab" data-role="admin">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+            Admin
+          </button>
+        </div>
+
+        <!-- Student form -->
+        <div id="student-login-new" class="login-form-new active">
+          <form onsubmit="handleLogin(event, 'student')">
+            <div class="lp-input-wrap">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+              <input type="text" placeholder="Student ID" required>
+            </div>
+            <div class="lp-input-wrap">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+              <input type="password" placeholder="Password" required>
+            </div>
+            <div class="lp-form-row">
+              <label class="lp-check"><input type="checkbox"><span>Remember me</span></label>
+              <a href="#" class="lp-link">Forgot password?</a>
+            </div>
+            <button type="submit" class="lp-submit-btn">
+              <span>Sign In</span>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+            </button>
+          </form>
+        </div>
+
+        <!-- Faculty form -->
+        <div id="faculty-login-new" class="login-form-new">
+          <form onsubmit="handleLogin(event, 'faculty')">
+            <div class="lp-input-wrap">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+              <input type="text" placeholder="Faculty ID" required>
+            </div>
+            <div class="lp-input-wrap">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>
+              <select required>
+                <option value="">Select Department</option>
+                <option value="cs">Computer Science</option>
+                <option value="math">Mathematics</option>
+                <option value="physics">Physics</option>
+                <option value="engineering">Engineering</option>
+              </select>
+            </div>
+            <div class="lp-input-wrap">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+              <input type="password" placeholder="Password" required>
+            </div>
+            <div class="lp-form-row">
+              <label class="lp-check"><input type="checkbox"><span>Remember me</span></label>
+              <a href="#" class="lp-link">Forgot password?</a>
+            </div>
+            <button type="submit" class="lp-submit-btn"><span>Sign In</span><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></button>
+          </form>
+        </div>
+
+        <!-- Admin form -->
+        <div id="admin-login-new" class="login-form-new">
+          <form onsubmit="handleLogin(event, 'admin')">
+            <div class="lp-input-wrap">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+              <input type="text" placeholder="Admin ID" required>
+            </div>
+            <div class="lp-input-wrap">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+              <input type="password" placeholder="Password" required>
+            </div>
+            <div class="lp-form-row">
+              <label class="lp-check"><input type="checkbox"><span>Remember me</span></label>
+              <a href="#" class="lp-link">Forgot password?</a>
+            </div>
+            <button type="submit" class="lp-submit-btn"><span>Sign In</span><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></button>
+          </form>
+        </div>
+
+        <p class="lp-footer-note">Need help? <a href="#" class="lp-link">Contact Support</a></p>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<div id="main-app" style="display:none;">
+<header class="header">
+<div class="logo" id="main-logo">
+<svg width="40" height="40" viewBox="0 0 40 40">
+<defs>
+<linearGradient id="logoGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+<stop offset="0%" style="stop-color:#1e3a8a;stop-opacity:1" />
+<stop offset="100%" style="stop-color:#3730a3;stop-opacity:1" />
+</linearGradient>
+</defs>
+<circle cx="20" cy="20" r="18" fill="url(#logoGradient)" opacity="0.2"/>
+<path d="M20 8 L20 32 M12 20 L28 20" stroke="url(#logoGradient)" stroke-width="3" stroke-linecap="round"/>
+<circle cx="20" cy="20" r="3" fill="url(#logoGradient)"/>
+</svg>
+<h1>Drift Detection</h1>
+<span class="logo-badge">AI-Powered</span>
+</div>
+<div class="header-right">
+<!-- Student header: just name + logout -->
+<div id="student-header-info" style="display:none; align-items:center; gap:1rem;">
+<div style="display:flex; align-items:center; gap:0.75rem;">
+<svg width="32" height="32" viewBox="0 0 24 24" fill="white">
+<path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z"/>
+</svg>
+<span id="profile-name" style="color:white; font-weight:600;"></span>
+</div>
+<button class="logout-btn-small" onclick="logout()">Logout</button>
+</div>
+<!-- Faculty/Admin header: just role label -->
+<div id="faculty-header-info" style="display:none; align-items:center; gap:1rem;">
+<span id="faculty-header-name" style="color:white; font-weight:600;"></span>
+</div>
+</div>
+</header>
+
+<!-- Student layout: sidebar + content -->
+<div id="student-layout" style="display:none;">
+<aside class="student-sidebar">
+<div class="sidebar-profile">
+<div class="sidebar-avatar">
+<svg width="48" height="48" viewBox="0 0 24 24" fill="white">
+<path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z"/>
+</svg>
+</div>
+<div class="sidebar-profile-info">
+<div class="sidebar-name" id="sidebar-student-name">Student</div>
+<div class="sidebar-id" id="sidebar-student-id">STU001</div>
+</div>
+</div>
+<nav class="sidebar-nav">
+<button class="sidebar-nav-btn active" data-view="student-dashboard">
+<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+<path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+<polyline points="9 22 9 12 15 12 15 22"/>
+</svg>
+Dashboard
+</button>
+<button class="sidebar-nav-btn" data-view="student-performance">
+<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+<path d="M18 20V10"/>
+<path d="M12 20V4"/>
+<path d="M6 20v-6"/>
+</svg>
+Performance
+</button>
+<button class="sidebar-nav-btn" data-view="student-schedule">
+<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+<rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+<line x1="16" y1="2" x2="16" y2="6"/>
+<line x1="8" y1="2" x2="8" y2="6"/>
+<line x1="3" y1="10" x2="21" y2="10"/>
+</svg>
+Schedule
+</button>
+</nav>
+<button class="sidebar-logout-btn" onclick="logout()">
+<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+<path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
+<polyline points="16 17 21 12 16 7"/>
+<line x1="21" y1="12" x2="9" y2="12"/>
+</svg>
+Logout
+</button>
+</aside>
+<div class="student-content">
+
+<div id="student-dashboard-view" class="view">
+<div class="page-header">
+<h2>Welcome, <span id="student-name">Student</span>!</h2>
+<p class="subtitle">Your learning dashboard</p>
+</div>
+
+
+<div class="student-info-card">
+<div class="student-profile">
+<div class="profile-avatar">
+<svg width="80" height="80" viewBox="0 0 24 24" fill="#4f46e5">
+<path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z"/>
+</svg>
+</div>
+<div class="profile-details">
+<h3 id="student-detail-name">Alice Johnson</h3>
+<p>Student ID: <span id="student-id">STU001</span></p>
+<p>Class: <span id="student-class">Computer Science - Year 2</span></p>
+</div>
+</div>
+<div class="student-rank">
+<div class="rank-badge">
+<div class="rank-number" id="student-rank">5</div>
+<div class="rank-label">Class Rank</div>
+</div>
+<div class="rank-stats">
+<div class="rank-stat">
+<span class="stat-label">Overall Score</span>
+<span class="stat-value" id="overall-score">87.5%</span>
+</div>
+<div class="rank-stat">
+<span class="stat-label">Completed</span>
+<span class="stat-value" id="completed-count">24/30</span>
+</div>
+</div>
+</div>
+</div>
+<div class="stats-grid">
+<div class="stat-card">
+<div class="stat-icon" style="background: #dbeafe;">
+<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="2">
+<path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+<polyline points="22 4 12 14.01 9 11.01"/>
+</svg>
+</div>
+<div class="stat-content">
+<div class="stat-value" id="student-accuracy">85%</div>
+<div class="stat-label">Average Accuracy</div>
+</div>
+</div>
+<div class="stat-card">
+<div class="stat-icon" style="background: #d1fae5;">
+<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2">
+<polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
+</svg>
+</div>
+<div class="stat-content">
+<div class="stat-value" id="student-progress">Good</div>
+<div class="stat-label">Learning Progress</div>
+</div>
+</div>
+<div class="stat-card">
+<div class="stat-icon" style="background: #fef3c7;">
+<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#f59e0b" stroke-width="2">
+<circle cx="12" cy="12" r="10"/>
+<polyline points="12 6 12 12 16 14"/>
+</svg>
+</div>
+<div class="stat-content">
+<div class="stat-value" id="avg-time">3.5 min</div>
+<div class="stat-label">Avg Time/Question</div>
+</div>
+</div>
+<div class="stat-card">
+<div class="stat-icon" style="background: #e0e7ff;">
+<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#4f46e5" stroke-width="2">
+<path d="M12 2v20M2 12h20"/>
+</svg>
+</div>
+<div class="stat-content">
+<div class="stat-value" id="streak-days">7</div>
+<div class="stat-label">Day Streak</div>
+</div>
+</div>
+</div>
+
+<!-- My Test Results Section -->
+<div class="chart-container">
+<div class="section-header-inline">
+<div>
+<h3>My Test Results</h3>
+<p class="subtitle-small">View your recent test scores and performance</p>
+</div>
+</div>
+<div id="student-test-results" class="student-test-results">
+<p class="empty-state-small">No test results yet</p>
+</div>
+</div>
+
+<!-- NEW: Drift Score Gauge + Streak Calendar row -->
+<div class="pro-feature-row">
+
+  <!-- Drift Score Gauge -->
+  <div class="pro-card drift-gauge-card">
+    <div class="pro-card-header">
+      <div class="pro-card-title">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        My Drift Score
+      </div>
+      <span class="pro-badge pro-badge-green">Healthy</span>
+    </div>
+    <div class="gauge-wrap">
+      <svg class="gauge-svg" viewBox="0 0 200 120">
+        <defs>
+          <linearGradient id="gaugeGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" stop-color="#10b981"/>
+            <stop offset="50%" stop-color="#f59e0b"/>
+            <stop offset="100%" stop-color="#ef4444"/>
+          </linearGradient>
+        </defs>
+        <!-- Track -->
+        <path d="M 20 100 A 80 80 0 0 1 180 100" fill="none" stroke="#f3f4f6" stroke-width="16" stroke-linecap="round"/>
+        <!-- Fill (22% drift = healthy) -->
+        <path d="M 20 100 A 80 80 0 0 1 180 100" fill="none" stroke="url(#gaugeGrad)" stroke-width="16" stroke-linecap="round"
+              stroke-dasharray="251" stroke-dashoffset="196" class="gauge-fill"/>
+        <text x="100" y="95" text-anchor="middle" class="gauge-val">22%</text>
+        <text x="100" y="112" text-anchor="middle" class="gauge-sub">Drift Index</text>
+        <text x="22" y="118" class="gauge-tick">0</text>
+        <text x="170" y="118" class="gauge-tick">100</text>
+      </svg>
+    </div>
+    <div class="gauge-legend">
+      <span class="gl-item gl-green">● Healthy &lt;30%</span>
+      <span class="gl-item gl-amber">● Warning 30–60%</span>
+      <span class="gl-item gl-red">● Critical &gt;60%</span>
+    </div>
+  </div>
+
+  <!-- Streak Calendar -->
+  <div class="pro-card streak-card">
+    <div class="pro-card-header">
+      <div class="pro-card-title">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+        Activity Heatmap
+      </div>
+      <span class="pro-badge pro-badge-purple">Last 5 Weeks</span>
+    </div>
+    <div class="heatmap-grid" id="activity-heatmap"></div>
+    <div class="heatmap-legend">
+      <span style="color:#9ca3af;font-size:0.72rem;">Less</span>
+      <span class="hm-box hm-0"></span>
+      <span class="hm-box hm-1"></span>
+      <span class="hm-box hm-2"></span>
+      <span class="hm-box hm-3"></span>
+      <span class="hm-box hm-4"></span>
+      <span style="color:#9ca3af;font-size:0.72rem;">More</span>
+    </div>
+  </div>
+
+  <!-- AI Study Tip -->
+  <div class="pro-card tip-card">
+    <div class="pro-card-header">
+      <div class="pro-card-title">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+        AI Study Tip
+      </div>
+      <span class="pro-badge pro-badge-cyan">Personalized</span>
+    </div>
+    <div class="tip-body">
+      <div class="tip-icon">🧠</div>
+      <p class="tip-text">Your accuracy drops on <strong>Thursday afternoons</strong>. Try reviewing Data Structures concepts on Wednesday evenings to stay ahead.</p>
+    </div>
+    <div class="tip-subjects">
+      <span class="tip-tag">Data Structures</span>
+      <span class="tip-tag">Algorithms</span>
+    </div>
+    <div class="tip-next">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+      Next recommended topic: <strong>Tree Traversal</strong>
+    </div>
+  </div>
+
+</div>
+</div>
+
+<div id="student-performance-view" class="view">
+<div class="page-header">
+<h2>Performance Overview</h2>
+<p class="subtitle">Your learning performance and feedback</p>
+</div>
+
+<div class="performance-hero">
+<img src="https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=800&h=300&fit=crop" alt="Performance Analytics" class="performance-banner">
+</div>
+
+<div class="chart-container">
+<h3>Performance Trend (30 Days)</h3>
+<canvas id="studentPerformanceChart"></canvas>
+</div>
+<div class="dashboard-grid">
+<div class="teacher-suggestions-card">
+<h3>Teacher Suggestions</h3>
+<div class="suggestions-list">
+<div class="suggestion-item">
+<div class="suggestion-header">
+<span class="teacher-name">Prof. Smith</span>
+<span class="suggestion-date">2 days ago</span>
+</div>
+<p class="suggestion-text">Great progress in Data Structures! Focus more on tree traversal algorithms.</p>
+</div>
+<div class="suggestion-item">
+<div class="suggestion-header">
+<span class="teacher-name">Dr. Johnson</span>
+<span class="suggestion-date">5 days ago</span>
+</div>
+<p class="suggestion-text">Your algorithm analysis is improving. Work on time complexity calculations.</p>
+</div>
+</div>
+</div>
+<div class="doubt-clarification-card">
+<h3>Ask Your Doubts</h3>
+<form class="doubt-form" onsubmit="submitDoubt(event)">
+<div class="form-field">
+<label>Subject</label>
+<select class="form-control" required>
+<option value="">Select subject</option>
+<option value="math">Mathematics</option>
+<option value="programming">Programming</option>
+<option value="ds">Data Structures</option>
+<option value="algo">Algorithms</option>
+</select>
+</div>
+<div class="form-field">
+<label>Your Question</label>
+<textarea class="form-control" rows="4" placeholder="Describe your doubt in detail..." required></textarea>
+</div>
+<button type="submit" class="btn btn-primary">Submit Question</button>
+</form>
+<div class="previous-doubts">
+<h4>Your Previous Questions</h4>
+<div class="doubt-item resolved">
+<div class="doubt-question"><strong>Q:</strong> How do I implement a binary search tree?</div>
+<div class="doubt-answer"><strong>A:</strong> Start with a Node class containing data, left, and right pointers...<br><span class="answered-by">- Answered by Prof. Smith</span></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+<div id="student-schedule-view" class="view">
+<div class="page-header">
+<h2>Upcoming Tests & Assignments</h2>
+<p class="subtitle">Stay on track with your schedule</p>
+</div>
+<div class="schedule-container">
+<div class="schedule-section">
+<h3>Tests</h3>
+<div class="schedule-list">
+<div class="schedule-item urgent">
+<div class="schedule-icon">
+<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+<rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+<line x1="16" y1="2" x2="16" y2="6"/>
+<line x1="8" y1="2" x2="8" y2="6"/>
+<line x1="3" y1="10" x2="21" y2="10"/>
+</svg>
+</div>
+<div class="schedule-details">
+<h4>Data Structures Quiz</h4>
+<p>Tomorrow, 10:00 AM</p>
+<span class="schedule-badge urgent">Due Soon</span>
+</div>
+</div>
+<div class="schedule-item">
+<div class="schedule-icon">
+<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+<rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+<line x1="16" y1="2" x2="16" y2="6"/>
+<line x1="8" y1="2" x2="8" y2="6"/>
+<line x1="3" y1="10" x2="21" y2="10"/>
+</svg>
+</div>
+<div class="schedule-details">
+<h4>Algorithms Midterm Exam</h4>
+<p>Next Monday, 2:00 PM</p>
+<span class="schedule-badge">7 days left</span>
+</div>
+</div>
+</div>
+</div>
+<div class="schedule-section">
+<h3>Assignments</h3>
+<div class="schedule-list">
+<div class="schedule-item">
+<div class="schedule-icon">
+<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+<polyline points="14 2 14 8 20 8"/>
+</svg>
+</div>
+<div class="schedule-details">
+<h4>Programming Assignment #3</h4>
+<p>Friday, 11:59 PM</p>
+<span class="schedule-badge">3 days left</span>
+</div>
+</div>
+<div class="schedule-item">
+<div class="schedule-icon">
+<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+<polyline points="14 2 14 8 20 8"/>
+</svg>
+</div>
+<div class="schedule-details">
+<h4>Mathematics Problem Set</h4>
+<p>Next Wednesday, 11:59 PM</p>
+<span class="schedule-badge">9 days left</span>
+</div>
+</div>
+</div>
+</div>
+<div class="schedule-section">
+<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+<h3>Available Tests</h3>
+<div style="display: flex; gap: 0.5rem; align-items: center;">
+<label style="font-size: 0.875rem; color: #6b7280;">Filter by:</label>
+<select id="difficulty-filter" class="form-control" style="width: auto; padding: 0.5rem;" onchange="filterStudentTests()">
+<option value="all">All Levels</option>
+<option value="easy">Easy</option>
+<option value="medium">Medium</option>
+<option value="hard">Hard</option>
+</select>
+</div>
+</div>
+<div class="schedule-list" id="student-tests-list">
+<p class="empty-state-small">No tests available</p>
+</div>
+</div>
+</div>
+</div>
+
+</div><!-- end student-content -->
+</div><!-- end student-layout -->
+
+<!-- Faculty layout: sidebar + content -->
+<div id="faculty-layout" style="display:none;">
+<aside class="student-sidebar">
+<div class="sidebar-profile">
+<div class="sidebar-avatar">
+<svg width="48" height="48" viewBox="0 0 24 24" fill="white">
+<path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z"/>
+</svg>
+</div>
+<div class="sidebar-profile-info">
+<div class="sidebar-name" id="sidebar-faculty-name">Faculty</div>
+<div class="sidebar-id">Faculty Portal</div>
+</div>
+</div>
+<nav class="sidebar-nav">
+<button class="sidebar-nav-btn active" data-view="dashboard">
+<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+<path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+<polyline points="9 22 9 12 15 12 15 22"/>
+</svg>
+Dashboard
+</button>
+<button class="sidebar-nav-btn" data-view="students">
+<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+<path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+<circle cx="9" cy="7" r="4"/>
+<path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+<path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+</svg>
+Students
+</button>
+<button class="sidebar-nav-btn" data-view="alerts">
+<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+<path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>
+<line x1="12" y1="9" x2="12" y2="13"/>
+<line x1="12" y1="17" x2="12.01" y2="17"/>
+</svg>
+Alerts
+</button>
+<button class="sidebar-nav-btn" data-view="polls">
+<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+<path d="M18 20V10"/>
+<path d="M12 20V4"/>
+<path d="M6 20v-6"/>
+</svg>
+Drift Polls
+</button>
+<button class="sidebar-nav-btn" data-view="simulator">
+<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+<circle cx="12" cy="12" r="10"/>
+<polyline points="12 6 12 12 16 14"/>
+</svg>
+Simulator
+</button>
+</nav>
+<button class="sidebar-logout-btn" onclick="logout()">
+<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+<path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
+<polyline points="16 17 21 12 16 7"/>
+<line x1="21" y1="12" x2="9" y2="12"/>
+</svg>
+Logout
+</button>
+</aside>
+<div class="student-content" id="faculty-content-area">
+
+<div id="dashboard-view" class="view active">
+<div class="page-header">
+<h2>Faculty Dashboard</h2>
+<p class="subtitle">Real-time monitoring and analytics of student learning patterns</p>
+</div>
+
+<!-- Quick Stats Overview -->
+<div class="stats-grid">
+<div class="stat-card stat-card-enhanced">
+<div class="stat-icon" style="background: #fee2e2;">
+<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#dc2626" stroke-width="2">
+<path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>
+<line x1="12" y1="9" x2="12" y2="13"/>
+<line x1="12" y1="17" x2="12.01" y2="17"/>
+</svg>
+</div>
+<div class="stat-content">
+<div class="stat-value" id="critical-count">0</div>
+<div class="stat-label">Critical Alerts</div>
+<div class="stat-trend trend-up">+2 from last week</div>
+</div>
+</div>
+<div class="stat-card stat-card-enhanced">
+<div class="stat-icon" style="background: #fef3c7;">
+<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#f59e0b" stroke-width="2">
+<circle cx="12" cy="12" r="10"/>
+<line x1="12" y1="8" x2="12" y2="12"/>
+<line x1="12" y1="16" x2="12.01" y2="16"/>
+</svg>
+</div>
+<div class="stat-content">
+<div class="stat-value" id="warning-count">0</div>
+<div class="stat-label">Warnings</div>
+<div class="stat-trend trend-down">-1 from last week</div>
+</div>
+</div>
+<div class="stat-card stat-card-enhanced">
+<div class="stat-icon" style="background: #d1fae5;">
+<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2">
+<path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+<polyline points="22 4 12 14.01 9 11.01"/>
+</svg>
+</div>
+<div class="stat-content">
+<div class="stat-value" id="healthy-count">0</div>
+<div class="stat-label">Healthy Students</div>
+<div class="stat-trend trend-up">+3 from last week</div>
+</div>
+</div>
+<div class="stat-card stat-card-enhanced">
+<div class="stat-icon" style="background: #e0e7ff;">
+<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#4f46e5" stroke-width="2">
+<path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+<circle cx="9" cy="7" r="4"/>
+<path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+<path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+</svg>
+</div>
+<div class="stat-content">
+<div class="stat-value" id="total-students">0</div>
+<div class="stat-label">Total Students</div>
+<div class="stat-trend">Active this month</div>
+</div>
+</div>
+</div>
+
+<!-- Dashboard Grid Layout -->
+<div class="faculty-dashboard-grid">
+<div class="dashboard-card chart-card">
+<div class="card-header">
+<h3>Class Drift Score Trend</h3>
+<div class="card-actions">
+<button class="btn-icon" title="Refresh">
+<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+<path d="M21.5 2v6h-6M2.5 22v-6h6M2 11.5a10 10 0 0 1 18.8-4.3M22 12.5a10 10 0 0 1-18.8 4.2"/>
+</svg>
+</button>
+</div>
+</div>
+<div class="card-body">
+<canvas id="classTrendChart"></canvas>
+</div>
+</div>
+<div class="dashboard-card alerts-card">
+<div class="card-header">
+<h3>Recent Alerts</h3>
+<a href="#" class="view-all-link" onclick="showAlertsView(); return false;">View All</a>
+</div>
+<div class="card-body">
+<div id="recent-alerts-list" class="recent-alerts-list">
+<p class="empty-state-small">No recent alerts</p>
+</div>
+</div>
+</div>
+<div class="dashboard-card performers-card">
+<div class="card-header">
+<h3>Top Performers</h3>
+<span class="badge badge-success">This Week</span>
+</div>
+<div class="card-body">
+<div class="performers-list" id="top-performers-list">
+<div class="performer-item">
+<div class="performer-rank">1</div>
+<div class="performer-info">
+<div class="performer-name">Loading...</div>
+<div class="performer-score">--</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="dashboard-card attention-card">
+<div class="card-header">
+<h3>Needs Attention</h3>
+<span class="badge badge-danger">Urgent</span>
+</div>
+<div class="card-body">
+<div class="attention-list" id="attention-list">
+<p class="empty-state-small">All students performing well!</p>
+</div>
+</div>
+</div>
+<div class="dashboard-card stats-detail-card">
+<div class="card-header">
+<h3>Class Statistics</h3>
+</div>
+<div class="card-body">
+<div class="stats-detail-grid">
+<div class="stats-detail-item">
+<div class="stats-detail-label">Average Accuracy</div>
+<div class="stats-detail-value">87.5%</div>
+<div class="stats-detail-bar"><div class="stats-detail-fill" style="width: 87.5%; background: #10b981;"></div></div>
+</div>
+<div class="stats-detail-item">
+<div class="stats-detail-label">Completion Rate</div>
+<div class="stats-detail-value">92.3%</div>
+<div class="stats-detail-bar"><div class="stats-detail-fill" style="width: 92.3%; background: #3b82f6;"></div></div>
+</div>
+<div class="stats-detail-item">
+<div class="stats-detail-label">Avg Response Time</div>
+<div class="stats-detail-value">3.2 min</div>
+<div class="stats-detail-bar"><div class="stats-detail-fill" style="width: 65%; background: #f59e0b;"></div></div>
+</div>
+<div class="stats-detail-item">
+<div class="stats-detail-label">Engagement Score</div>
+<div class="stats-detail-value">8.4/10</div>
+<div class="stats-detail-bar"><div class="stats-detail-fill" style="width: 84%; background: #8b5cf6;"></div></div>
+</div>
+</div>
+</div>
+</div>
+<div class="dashboard-card actions-card">
+<div class="card-header">
+<h3>Quick Actions</h3>
+</div>
+<div class="card-body">
+<div class="quick-actions-grid">
+<button class="quick-action-btn" onclick="showStudentsView()">
+<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+<path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+<circle cx="9" cy="7" r="4"/>
+<path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+<path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+</svg>
+<span>View All Students</span>
+</button>
+<button class="quick-action-btn" onclick="showAlertsView()">
+<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+<path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/>
+<path d="M13.73 21a2 2 0 0 1-3.46 0"/>
+</svg>
+<span>Check Alerts</span>
+</button>
+<button class="quick-action-btn" onclick="showSimulatorView()">
+<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+<circle cx="12" cy="12" r="10"/>
+<polyline points="12 6 12 12 16 14"/>
+</svg>
+<span>Run Simulator</span>
+</button>
+<button class="quick-action-btn" onclick="exportStudentReport()">
+<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+<path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+<polyline points="7 10 12 15 17 10"/>
+<line x1="12" y1="15" x2="12" y2="3"/>
+</svg>
+<span>Export Report</span>
+</button>
+</div>
+</div>
+</div>
+<div class="dashboard-card test-management-card">
+<div class="card-header">
+<h3>Test & Assignment Management</h3>
+<button class="btn btn-primary btn-small" onclick="openCreateTestModal()">
+<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+<line x1="12" y1="5" x2="12" y2="19"/>
+<line x1="5" y1="12" x2="19" y2="12"/>
+</svg>
+Create Test
+</button>
+</div>
+<div class="card-body">
+<div id="tests-list" class="tests-list">
+<p class="empty-state-small">No tests created yet</p>
+</div>
+</div>
+</div>
+<div class="dashboard-card results-card">
+<div class="card-header">
+<h3>Recent Test Results</h3>
+<a href="#" class="view-all-link" onclick="showTestResultsView(); return false;">View All</a>
+</div>
+<div class="card-body">
+<div id="recent-results-list" class="recent-results-list">
+<p class="empty-state-small">No test results yet</p>
+</div>
+</div>
+</div>
+
+<!-- NEW: At-Risk Intervention Panel -->
+<div class="dashboard-card pro-card-full at-risk-panel">
+<div class="card-header">
+<div class="pro-card-title">
+<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#ef4444" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+At-Risk Intervention Queue
+</div>
+<span class="pro-badge pro-badge-red">3 Urgent</span>
+</div>
+<div class="card-body">
+<div class="at-risk-list">
+<div class="at-risk-item">
+<div class="at-risk-avatar" style="background:linear-gradient(135deg,#ef4444,#f97316)">AM</div>
+<div class="at-risk-info">
+<div class="at-risk-name">Alex Martinez</div>
+<div class="at-risk-meta">Drift: 78% · Accuracy dropped 34% in 5 days</div>
+<div class="at-risk-bar"><div class="at-risk-fill" style="width:78%;background:#ef4444"></div></div>
+</div>
+<div class="at-risk-actions">
+<button class="pro-action-btn pro-btn-red" onclick="alert('Message sent to Alex Martinez')">Message</button>
+<button class="pro-action-btn pro-btn-outline">Schedule</button>
+</div>
+</div>
+<div class="at-risk-item">
+<div class="at-risk-avatar" style="background:linear-gradient(135deg,#f59e0b,#ef4444)">JL</div>
+<div class="at-risk-info">
+<div class="at-risk-name">Jamie Lee</div>
+<div class="at-risk-meta">Drift: 61% · Missed 3 consecutive sessions</div>
+<div class="at-risk-bar"><div class="at-risk-fill" style="width:61%;background:#f59e0b"></div></div>
+</div>
+<div class="at-risk-actions">
+<button class="pro-action-btn pro-btn-red" onclick="alert('Message sent to Jamie Lee')">Message</button>
+<button class="pro-action-btn pro-btn-outline">Schedule</button>
+</div>
+</div>
+<div class="at-risk-item">
+<div class="at-risk-avatar" style="background:linear-gradient(135deg,#8b5cf6,#db2777)">SR</div>
+<div class="at-risk-info">
+<div class="at-risk-name">Sam Rivera</div>
+<div class="at-risk-meta">Drift: 55% · Response time increased 2×</div>
+<div class="at-risk-bar"><div class="at-risk-fill" style="width:55%;background:#8b5cf6"></div></div>
+</div>
+<div class="at-risk-actions">
+<button class="pro-action-btn pro-btn-red" onclick="alert('Message sent to Sam Rivera')">Message</button>
+<button class="pro-action-btn pro-btn-outline">Schedule</button>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+<!-- NEW: Weekly Class Report -->
+<div class="dashboard-card pro-card-full weekly-report-card">
+<div class="card-header">
+<div class="pro-card-title">
+<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+Weekly Class Report
+</div>
+<button class="pro-action-btn pro-btn-outline" onclick="exportStudentReport()">Export PDF</button>
+</div>
+<div class="card-body">
+<div class="weekly-report-grid">
+<div class="wr-stat">
+<div class="wr-icon" style="background:#ede9fe;color:#7c3aed">📈</div>
+<div class="wr-val">+8.2%</div>
+<div class="wr-lbl">Avg Score Change</div>
+</div>
+<div class="wr-stat">
+<div class="wr-icon" style="background:#fce7f3;color:#db2777">⚠️</div>
+<div class="wr-val">5</div>
+<div class="wr-lbl">New Drift Cases</div>
+</div>
+<div class="wr-stat">
+<div class="wr-icon" style="background:#d1fae5;color:#10b981">✅</div>
+<div class="wr-val">12</div>
+<div class="wr-lbl">Resolved Alerts</div>
+</div>
+<div class="wr-stat">
+<div class="wr-icon" style="background:#dbeafe;color:#3b82f6">🎯</div>
+<div class="wr-val">94%</div>
+<div class="wr-lbl">Engagement Rate</div>
+</div>
+<div class="wr-stat">
+<div class="wr-icon" style="background:#fef3c7;color:#f59e0b">⏱️</div>
+<div class="wr-val">3.1 min</div>
+<div class="wr-lbl">Avg Response Time</div>
+</div>
+<div class="wr-stat">
+<div class="wr-icon" style="background:#ede9fe;color:#7c3aed">🏆</div>
+<div class="wr-val">Sara K.</div>
+<div class="wr-lbl">Top Improver</div>
+</div>
+</div>
+</div>
+</div>
+
+</div>
+</div>
+
+<div id="polls-view" class="view">
+<div class="page-header">
+<h2>Drift Polls</h2>
+<p class="subtitle">Create polls to assess student understanding and detect concept drift</p>
+</div>
+<div class="poll-statistics-section">
+<div class="section-header">
+<div>
+<h3>Poll Statistics Overview</h3>
+<p class="section-subtitle">Real-time analytics of poll engagement and drift detection</p>
+</div>
+</div>
+<div class="poll-stats-grid">
+<div class="poll-stat-card">
+<div class="poll-stat-icon" style="background: linear-gradient(135deg, #1e3a8a 0%, #3730a3 100%);">
+<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2">
+<path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>
+</svg>
+</div>
+<div class="poll-stat-content">
+<div class="poll-stat-value" data-stat="total-polls">0</div>
+<div class="poll-stat-label">Total Polls</div>
+</div>
+</div>
+<div class="poll-stat-card">
+<div class="poll-stat-icon" style="background: linear-gradient(135deg, #10b981 0%, #059669 100%);">
+<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2">
+<path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+</svg>
+</div>
+<div class="poll-stat-content">
+<div class="poll-stat-value" data-stat="active-polls">0</div>
+<div class="poll-stat-label">Active Polls</div>
+</div>
+</div>
+<div class="poll-stat-card">
+<div class="poll-stat-icon" style="background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);">
+<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2">
+<path d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
+</svg>
+</div>
+<div class="poll-stat-content">
+<div class="poll-stat-value" data-stat="total-responses">0</div>
+<div class="poll-stat-label">Total Responses</div>
+</div>
+</div>
+<div class="poll-stat-card">
+<div class="poll-stat-icon" style="background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);">
+<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2">
+<path d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
+</svg>
+</div>
+<div class="poll-stat-content">
+<div class="poll-stat-value" data-stat="avg-response-rate">0%</div>
+<div class="poll-stat-label">Avg Response Rate</div>
+</div>
+</div>
+<div class="poll-stat-card">
+<div class="poll-stat-icon" style="background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);">
+<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2">
+<path d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
+</svg>
+</div>
+<div class="poll-stat-content">
+<div class="poll-stat-value" data-stat="high-drift">0</div>
+<div class="poll-stat-label">High Drift Detected</div>
+</div>
+</div>
+</div>
+</div>
+<div class="polls-container">
+<div class="polls-header">
+<button class="btn btn-primary" onclick="openCreatePollModal()">
+<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+<line x1="12" y1="5" x2="12" y2="19"/>
+<line x1="5" y1="12" x2="19" y2="12"/>
+</svg>
+Create New Poll
+</button>
+</div>
+<div class="polls-grid" id="polls-grid">
+<p class="empty-state">No polls created yet</p>
+</div>
+</div>
+</div>
+
+<div id="students-view" class="view">
+<div class="page-header">
+<h2>Student List</h2>
+<p class="subtitle">Monitor individual student performance</p>
+</div>
+<div class="students-toolbar">
+<div class="search-box">
+<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#6b7280" stroke-width="2">
+<circle cx="11" cy="11" r="8"/>
+<path d="m21 21-4.35-4.35"/>
+</svg>
+<input type="text" id="student-search" placeholder="Search by name or ID..." class="search-input">
+</div>
+<div class="filter-buttons">
+<button class="filter-btn active" data-filter="all">All Students</button>
+<button class="filter-btn" data-filter="critical">Critical</button>
+<button class="filter-btn" data-filter="warning">Warning</button>
+<button class="filter-btn" data-filter="healthy">Healthy</button>
+</div>
+<button class="btn btn-primary" onclick="exportStudentReport()">
+<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+<path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+<polyline points="7 10 12 15 17 10"/>
+<line x1="12" y1="15" x2="12" y2="3"/>
+</svg>
+Export Report
+</button>
+</div>
+<div class="students-grid" id="students-grid"></div>
+</div>
+
+<div id="alerts-view" class="view">
+<div class="page-header">
+<h2>Active Alerts</h2>
+<p class="subtitle">Intervention recommendations</p>
+</div>
+<div class="alerts-list" id="alerts-list"></div>
+</div>
+
+<div id="simulator-view" class="view">
+<div class="page-header">
+<h2>Activity Simulator</h2>
+<p class="subtitle">Simulate student interactions</p>
+</div>
+<div class="simulator-container">
+<div class="simulator-controls">
+<div class="form-group">
+<label for="sim-student">Select Student</label>
+<select id="sim-student" class="form-control"></select>
+</div>
+<div class="form-group">
+<label for="sim-accuracy">Accuracy (%)</label>
+<input type="range" id="sim-accuracy" class="form-range" min="0" max="100" value="85">
+<span id="sim-accuracy-value">85%</span>
+</div>
+<div class="form-group">
+<label for="sim-time">Time Taken (seconds)</label>
+<input type="range" id="sim-time" class="form-range" min="30" max="600" value="180">
+<span id="sim-time-value">180s</span>
+</div>
+<div class="form-group">
+<label for="sim-retries">Retry Count</label>
+<input type="range" id="sim-retries" class="form-range" min="0" max="10" value="1">
+<span id="sim-retries-value">1</span>
+</div>
+<div class="form-group">
+<label for="sim-steps">Problem-Solving Steps</label>
+<input type="range" id="sim-steps" class="form-range" min="1" max="20" value="8">
+<span id="sim-steps-value">8</span>
+</div>
+<button id="submit-activity" class="btn btn-primary">Submit Activity</button>
+<button id="simulate-decline" class="btn btn-secondary">Simulate Decline</button>
+</div>
+<div class="simulator-results">
+<h3>Recent Activities</h3>
+<div id="activity-log" class="activity-log">
+<p class="empty-state">No activities yet</p>
+</div>
+</div>
+</div>
+</div>
+
+<div id="test-results-view" class="view">
+<div class="page-header">
+<div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem;">
+<button onclick="showDashboardView()" class="back-btn" title="Back to Dashboard">
+<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+<path d="M19 12H5M12 19l-7-7 7-7"/>
+</svg>
+Back
+</button>
+</div>
+<h2>Test Results</h2>
+<p class="subtitle">View and analyze student test performance</p>
+</div>
+<div class="test-results-container">
+<div class="test-filter-bar">
+<select id="test-filter" class="form-control">
+<option value="all">All Tests</option>
+</select>
+<select id="student-filter" class="form-control">
+<option value="all">All Students</option>
+</select>
+</div>
+<div id="test-results-grid" class="test-results-grid"></div>
+</div>
+</div>
+
+</div><!-- end faculty-content-area -->
+</div><!-- end faculty-layout -->
+
+<!-- Admin layout: sidebar + content -->
+<div id="admin-layout" style="display:none;">
+<aside class="student-sidebar">
+<div class="sidebar-profile">
+<div class="sidebar-avatar">
+<svg width="48" height="48" viewBox="0 0 24 24" fill="white">
+<path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z"/>
+</svg>
+</div>
+<div class="sidebar-profile-info">
+<div class="sidebar-name" id="sidebar-admin-name">Admin</div>
+<div class="sidebar-id">Admin Portal</div>
+</div>
+</div>
+<nav class="sidebar-nav">
+<button class="sidebar-nav-btn active" data-view="admin-dashboard">
+<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+<path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+<polyline points="9 22 9 12 15 12 15 22"/>
+</svg>
+Admin Panel
+</button>
+<button class="sidebar-nav-btn" data-view="faculty-view">
+<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+<polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
+</svg>
+Faculty View
+</button>
+<button class="sidebar-nav-btn" data-view="students">
+<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+<path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+<circle cx="9" cy="7" r="4"/>
+<path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+<path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+</svg>
+Students
+</button>
+<button class="sidebar-nav-btn" data-view="alerts">
+<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+<path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>
+<line x1="12" y1="9" x2="12" y2="13"/>
+<line x1="12" y1="17" x2="12.01" y2="17"/>
+</svg>
+Alerts
+</button>
+<button class="sidebar-nav-btn" data-view="polls">
+<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+<path d="M18 20V10"/>
+<path d="M12 20V4"/>
+<path d="M6 20v-6"/>
+</svg>
+Polls
+</button>
+</nav>
+<button class="sidebar-logout-btn" onclick="logout()">
+<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+<path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
+<polyline points="16 17 21 12 16 7"/>
+<line x1="21" y1="12" x2="9" y2="12"/>
+</svg>
+Logout
+</button>
+</aside>
+<div class="student-content" id="admin-content-area">
+
+<div id="admin-dashboard-view" class="view">
+<div class="page-header">
+<h2>Admin Control Panel</h2>
+<p class="subtitle">System-wide management and oversight</p>
+</div>
+
+<!-- Admin Stats Overview -->
+<div class="stats-grid">
+<div class="stat-card stat-card-enhanced">
+<div class="stat-icon" style="background: #dbeafe;">
+<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="2">
+<path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+<circle cx="9" cy="7" r="4"/>
+<path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+<path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+</svg>
+</div>
+<div class="stat-content">
+<div class="stat-value" id="admin-total-students">0</div>
+<div class="stat-label">Total Students</div>
+<div class="stat-trend">Across all departments</div>
+</div>
+</div>
+<div class="stat-card stat-card-enhanced">
+<div class="stat-icon" style="background: #e0e7ff;">
+<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#4f46e5" stroke-width="2">
+<path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+<circle cx="9" cy="7" r="4"/>
+<path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/>
+</svg>
+</div>
+<div class="stat-content">
+<div class="stat-value" id="admin-total-faculty">0</div>
+<div class="stat-label">Faculty Members</div>
+<div class="stat-trend">Active instructors</div>
+</div>
+</div>
+<div class="stat-card stat-card-enhanced">
+<div class="stat-icon" style="background: #d1fae5;">
+<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2">
+<path d="M12 2L2 7l10 5 10-5-10-5z"/>
+<path d="M2 17l10 5 10-5M2 12l10 5 10-5"/>
+</svg>
+</div>
+<div class="stat-content">
+<div class="stat-value" id="admin-total-tests">0</div>
+<div class="stat-label">Total Tests</div>
+<div class="stat-trend">System-wide</div>
+</div>
+</div>
+<div class="stat-card stat-card-enhanced">
+<div class="stat-icon" style="background: #fef3c7;">
+<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#f59e0b" stroke-width="2">
+<circle cx="12" cy="12" r="10"/>
+<polyline points="12 6 12 12 16 14"/>
+</svg>
+</div>
+<div class="stat-content">
+<div class="stat-value" id="admin-system-uptime">99.9%</div>
+<div class="stat-label">System Uptime</div>
+<div class="stat-trend">Last 30 days</div>
+</div>
+</div>
+</div>
+
+<!-- Admin Dashboard Grid -->
+<div class="admin-dashboard-grid">
+<!-- User Management -->
+<div class="dashboard-card user-management-card">
+<div class="card-header">
+<h3>User Management</h3>
+<button class="btn btn-primary btn-small" onclick="openCreateUserModal()">
+<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+<line x1="12" y1="5" x2="12" y2="19"/>
+<line x1="5" y1="12" x2="19" y2="12"/>
+</svg>
+Add User
+</button>
+</div>
+<div class="card-body">
+<div class="user-management-tabs">
+<button class="tab-btn active" onclick="showUserTab('students')">Students</button>
+<button class="tab-btn" onclick="showUserTab('faculty')">Faculty</button>
+</div>
+<div id="students-tab" class="user-tab-content active">
+<div class="user-list" id="admin-students-list">
+<p class="empty-state-small">No students registered</p>
+</div>
+</div>
+<div id="faculty-tab" class="user-tab-content">
+<div class="user-list" id="admin-faculty-list">
+<p class="empty-state-small">No faculty members registered</p>
+</div>
+</div>
+</div>
+</div>
+
+<!-- System Health Monitor -->
+<div class="dashboard-card system-health-card">
+<div class="card-header">
+<h3>System Health</h3>
+<span class="badge badge-success">All Systems Operational</span>
+</div>
+<div class="card-body">
+<div class="health-metrics">
+<div class="health-metric">
+<div class="health-metric-label">Database</div>
+<div class="health-metric-status status-healthy">
+<span class="status-dot"></span>
+Operational
+</div>
+</div>
+<div class="health-metric">
+<div class="health-metric-label">API Server</div>
+<div class="health-metric-status status-healthy">
+<span class="status-dot"></span>
+Operational
+</div>
+</div>
+<div class="health-metric">
+<div class="health-metric-label">Authentication</div>
+<div class="health-metric-status status-healthy">
+<span class="status-dot"></span>
+Operational
+</div>
+</div>
+<div class="health-metric">
+<div class="health-metric-label">Storage</div>
+<div class="health-metric-status status-healthy">
+<span class="status-dot"></span>
+Operational
+</div>
+</div>
+</div>
+</div>
+</div>
+
+<!-- Recent Activity Log -->
+<div class="dashboard-card activity-log-card">
+<div class="card-header">
+<h3>Recent Activity</h3>
+<a href="#" class="view-all-link">View All Logs</a>
+</div>
+<div class="card-body">
+<div class="activity-log" id="admin-activity-log">
+<div class="activity-item">
+<div class="activity-icon" style="background: #dbeafe;">
+<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="2">
+<path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+<circle cx="8.5" cy="7" r="4"/>
+<polyline points="17 11 19 13 23 9"/>
+</svg>
+</div>
+<div class="activity-content">
+<div class="activity-text">New student registered: Alice Johnson</div>
+<div class="activity-time">2 hours ago</div>
+</div>
+</div>
+<div class="activity-item">
+<div class="activity-icon" style="background: #e0e7ff;">
+<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#4f46e5" stroke-width="2">
+<path d="M12 2L2 7l10 5 10-5-10-5z"/>
+<path d="M2 17l10 5 10-5M2 12l10 5 10-5"/>
+</svg>
+</div>
+<div class="activity-content">
+<div class="activity-text">Test created: Advanced Algorithms</div>
+<div class="activity-time">5 hours ago</div>
+</div>
+</div>
+<div class="activity-item">
+<div class="activity-icon" style="background: #d1fae5;">
+<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2">
+<path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+<polyline points="22 4 12 14.01 9 11.01"/>
+</svg>
+</div>
+<div class="activity-content">
+<div class="activity-text">System backup completed successfully</div>
+<div class="activity-time">1 day ago</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+<!-- Department Overview -->
+<div class="dashboard-card department-card">
+<div class="card-header">
+<h3>Department Overview</h3>
+</div>
+<div class="card-body">
+<div class="department-list">
+<div class="department-item">
+<div class="department-name">Computer Science</div>
+<div class="department-stats">
+<span>120 Students</span>
+<span>8 Faculty</span>
+</div>
+</div>
+<div class="department-item">
+<div class="department-name">Mathematics</div>
+<div class="department-stats">
+<span>85 Students</span>
+<span>6 Faculty</span>
+</div>
+</div>
+<div class="department-item">
+<div class="department-name">Physics</div>
+<div class="department-stats">
+<span>95 Students</span>
+<span>7 Faculty</span>
+</div>
+</div>
+<div class="department-item">
+<div class="department-name">Engineering</div>
+<div class="department-stats">
+<span>150 Students</span>
+<span>12 Faculty</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+<!-- System Configuration -->
+<div class="dashboard-card config-card">
+<div class="card-header">
+<h3>System Configuration</h3>
+<button class="btn btn-secondary btn-small" onclick="openSystemSettings()">
+<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+<circle cx="12" cy="12" r="3"/>
+<path d="M12 1v6m0 6v6m5.2-13.2l-4.2 4.2m0 6l4.2 4.2M23 12h-6m-6 0H1m18.2 5.2l-4.2-4.2m0-6l4.2-4.2"/>
+</svg>
+Settings
+</button>
+</div>
+<div class="card-body">
+<div class="config-list">
+<div class="config-item">
+<div class="config-label">Drift Detection Threshold</div>
+<div class="config-value">0.7</div>
+</div>
+<div class="config-item">
+<div class="config-label">Alert Notification</div>
+<div class="config-value">Enabled</div>
+</div>
+<div class="config-item">
+<div class="config-label">Auto Backup</div>
+<div class="config-value">Daily at 2:00 AM</div>
+</div>
+<div class="config-item">
+<div class="config-label">Session Timeout</div>
+<div class="config-value">30 minutes</div>
+</div>
+</div>
+</div>
+</div>
+
+<!-- Platform Analytics -->
+<div class="dashboard-card analytics-card">
+<div class="card-header">
+<h3>Platform Analytics</h3>
+</div>
+<div class="card-body">
+<canvas id="adminAnalyticsChart"></canvas>
+</div>
+</div>
+
+<!-- NEW: System Health Monitor -->
+<div class="dashboard-card pro-card-full system-health-card">
+<div class="card-header">
+<div class="pro-card-title">
+<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+System Health Monitor
+</div>
+<span class="pro-badge pro-badge-green">All Systems Operational</span>
+</div>
+<div class="card-body">
+<div class="health-grid">
+<div class="health-item">
+<div class="health-label">API Response</div>
+<div class="health-bar-wrap"><div class="health-bar" style="width:98%;background:#10b981"></div></div>
+<div class="health-val health-green">98ms</div>
+</div>
+<div class="health-item">
+<div class="health-label">Database Load</div>
+<div class="health-bar-wrap"><div class="health-bar" style="width:34%;background:#3b82f6"></div></div>
+<div class="health-val" style="color:#3b82f6">34%</div>
+</div>
+<div class="health-item">
+<div class="health-label">Memory Usage</div>
+<div class="health-bar-wrap"><div class="health-bar" style="width:61%;background:#f59e0b"></div></div>
+<div class="health-val" style="color:#f59e0b">61%</div>
+</div>
+<div class="health-item">
+<div class="health-label">Active Sessions</div>
+<div class="health-bar-wrap"><div class="health-bar" style="width:45%;background:#7c3aed"></div></div>
+<div class="health-val" style="color:#7c3aed">247</div>
+</div>
+<div class="health-item">
+<div class="health-label">Drift Jobs Queue</div>
+<div class="health-bar-wrap"><div class="health-bar" style="width:12%;background:#10b981"></div></div>
+<div class="health-val health-green">12 pending</div>
+</div>
+<div class="health-item">
+<div class="health-label">Error Rate</div>
+<div class="health-bar-wrap"><div class="health-bar" style="width:2%;background:#10b981"></div></div>
+<div class="health-val health-green">0.2%</div>
+</div>
+</div>
+</div>
+</div>
+
+<!-- NEW: Live Activity Feed -->
+<div class="dashboard-card pro-card-full live-feed-card">
+<div class="card-header">
+<div class="pro-card-title">
+<span class="feed-live-dot"></span>
+Live Activity Feed
+</div>
+<span class="pro-badge pro-badge-purple">Real-time</span>
+</div>
+<div class="card-body">
+<div class="live-feed" id="admin-live-feed">
+<div class="feed-item feed-alert">
+<div class="feed-icon">🚨</div>
+<div class="feed-content"><strong>Critical drift detected</strong> — Alex Martinez (CS-Y2) · Drift score jumped to 78%</div>
+<div class="feed-time">2 min ago</div>
+</div>
+<div class="feed-item feed-login">
+<div class="feed-icon">🔐</div>
+<div class="feed-content"><strong>Faculty login</strong> — Prof. Smith accessed the portal</div>
+<div class="feed-time">8 min ago</div>
+</div>
+<div class="feed-item feed-test">
+<div class="feed-icon">📝</div>
+<div class="feed-content"><strong>Test completed</strong> — 24 students finished "Data Structures Quiz"</div>
+<div class="feed-time">15 min ago</div>
+</div>
+<div class="feed-item feed-resolve">
+<div class="feed-icon">✅</div>
+<div class="feed-content"><strong>Alert resolved</strong> — Jamie Lee's drift score improved to 28%</div>
+<div class="feed-time">1 hr ago</div>
+</div>
+<div class="feed-item feed-login">
+<div class="feed-icon">👤</div>
+<div class="feed-content"><strong>New student registered</strong> — Priya Nair joined Computer Science</div>
+<div class="feed-time">2 hr ago</div>
+</div>
+</div>
+</div>
+</div>
+
+</div>
+</div>
+
+<!-- Faculty View for Admin -->
+<div id="faculty-view-view" class="view">
+<div class="page-header">
+<h2>Faculty View</h2>
+<p class="subtitle">Monitor student performance and drift analytics</p>
+</div>
+<div class="stats-grid">
+<div class="stat-card stat-card-enhanced">
+<div class="stat-icon" style="background: #fee2e2;">
+<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#dc2626" stroke-width="2">
+<path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>
+<line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/>
+</svg>
+</div>
+<div class="stat-content">
+<div class="stat-value" id="admin-fv-critical">0</div>
+<div class="stat-label">Critical Alerts</div>
+</div>
+</div>
+<div class="stat-card stat-card-enhanced">
+<div class="stat-icon" style="background: #fef3c7;">
+<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#f59e0b" stroke-width="2">
+<circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>
+</svg>
+</div>
+<div class="stat-content">
+<div class="stat-value" id="admin-fv-warning">0</div>
+<div class="stat-label">Warnings</div>
+</div>
+</div>
+<div class="stat-card stat-card-enhanced">
+<div class="stat-icon" style="background: #d1fae5;">
+<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2">
+<path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/>
+</svg>
+</div>
+<div class="stat-content">
+<div class="stat-value" id="admin-fv-healthy">0</div>
+<div class="stat-label">Healthy</div>
+</div>
+</div>
+<div class="stat-card stat-card-enhanced">
+<div class="stat-icon" style="background: #e0e7ff;">
+<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#4f46e5" stroke-width="2">
+<path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/>
+<path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/>
+</svg>
+</div>
+<div class="stat-content">
+<div class="stat-value" id="admin-fv-total">0</div>
+<div class="stat-label">Total Students</div>
+</div>
+</div>
+</div>
+<div class="faculty-dashboard-grid">
+<div class="dashboard-card chart-card">
+<div class="card-header"><h3>Class Drift Score Trend</h3></div>
+<div class="card-body"><canvas id="adminFvTrendChart"></canvas></div>
+</div>
+<div class="dashboard-card alerts-card">
+<div class="card-header">
+<h3>Recent Alerts</h3>
+</div>
+<div class="card-body">
+<div id="admin-fv-alerts-list" class="recent-alerts-list">
+<p class="empty-state-small">No recent alerts</p>
+</div>
+</div>
+</div>
+<div class="dashboard-card" style="grid-column: span 2;">
+<div class="card-header">
+<h3>All Students — Drift Overview</h3>
+</div>
+<div class="card-body">
+<div id="admin-fv-students-list" class="students-grid"></div>
+</div>
+</div>
+</div>
+</div>
+
+</div><!-- end admin-content-area -->
+</div><!-- end admin-layout -->
+
+<div id="student-modal" class="modal">
+<div class="modal-content" style="max-width: 1200px;">
+<div class="modal-header">
+<h2 id="modal-student-name">Student Details</h2>
+<button class="modal-close">&times;</button>
+</div>
+<div class="modal-body">
+<!-- Overall Drift Score -->
+<div class="drift-score-display">
+<div class="drift-score-circle" id="modal-drift-score">
+<span class="drift-score-value">0.0</span>
+</div>
+<div class="drift-score-label">Overall Drift Score</div>
+</div>
+
+<!-- Enhanced Features Tabs -->
+<div class="analysis-tabs">
+<button class="analysis-tab active" data-tab="overview">Overview</button>
+<button class="analysis-tab" data-tab="topics">Topic Analysis</button>
+<button class="analysis-tab" data-tab="behavior">Behavior Patterns</button>
+<button class="analysis-tab" data-tab="speed">Learning Speed</button>
+<button class="analysis-tab" data-tab="recommendations">Recommendations</button>
+</div>
+
+<!-- Tab Content -->
+<div class="tab-content active" id="overview-tab">
+<div class="chart-container">
+<h3>Drift Score Timeline (30 days)</h3>
+<canvas id="studentTimelineChart"></canvas>
+</div>
+<div class="chart-container">
+<h3>Metric Breakdown</h3>
+<canvas id="studentMetricsChart"></canvas>
+</div>
+<div class="baseline-comparison">
+<h3>Current vs Baseline</h3>
+<div id="baseline-stats" class="baseline-stats"></div>
+</div>
+</div>
+
+<div class="tab-content" id="topics-tab">
+<h3>Topic-Level Drift Detection</h3>
+<div id="topic-analysis-container" class="topic-analysis-grid"></div>
+</div>
+
+<div class="tab-content" id="behavior-tab">
+<h3>Guessing Behavior & Early Warning Analysis</h3>
+<div id="behavior-analysis-container"></div>
+</div>
+
+<div class="tab-content" id="speed-tab">
+<h3>Learning Speed Analysis</h3>
+<div id="speed-analysis-container"></div>
+</div>
+
+<div class="tab-content" id="recommendations-tab">
+<h3>Personalized Learning Recommendations</h3>
+<div id="recommendations-container"></div>
+</div>
+
+<div class="feedback-section" id="feedback-section"></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+<!-- Create Test Modal -->
+<div id="create-test-modal" class="modal">
+<div class="modal-content">
+<div class="modal-header">
+<h2>Create New Test/Assignment</h2>
+<button class="modal-close" onclick="closeCreateTestModal()">&times;</button>
+</div>
+<div class="modal-body">
+<form id="create-test-form" onsubmit="createTest(event)">
+<div class="form-field">
+<label>Test Title</label>
+<input type="text" id="test-title" class="form-control" placeholder="e.g., Data Structures Quiz" required>
+</div>
+<div class="form-field">
+<label>Subject</label>
+<select id="test-subject" class="form-control" required>
+<option value="">Select Subject</option>
+<option value="math">Mathematics</option>
+<option value="programming">Programming</option>
+<option value="ds">Data Structures</option>
+<option value="algo">Algorithms</option>
+</select>
+</div>
+<div class="form-field">
+<label>Difficulty Level</label>
+<select id="test-difficulty" class="form-control" required>
+<option value="">Select Difficulty</option>
+<option value="easy">Easy</option>
+<option value="medium">Medium</option>
+<option value="hard">Hard</option>
+</select>
+</div>
+<div class="form-field">
+<label>Duration (minutes)</label>
+<input type="number" id="test-duration" class="form-control" min="5" max="180" value="30" required>
+</div>
+<div class="form-field">
+<label>Total Marks</label>
+<input type="number" id="test-marks" class="form-control" min="10" max="100" value="100" required>
+</div>
+<div class="form-field">
+<label>Due Date</label>
+<input type="datetime-local" id="test-due-date" class="form-control" required>
+</div>
+<div class="form-field">
+<label>Questions (one per line)</label>
+<textarea id="test-questions" class="form-control" rows="6" placeholder="Enter questions, one per line" required></textarea>
+</div>
+<div class="modal-actions">
+<button type="button" class="btn btn-secondary" onclick="closeCreateTestModal()">Cancel</button>
+<button type="submit" class="btn btn-primary">Create Test</button>
+</div>
+</form>
+</div>
+</div>
+</div>
+
+<!-- Take Test Modal -->
+<div id="take-test-modal" class="modal">
+<div class="modal-content">
+<div class="modal-header">
+<h2 id="take-test-title">Test Title</h2>
+<button class="modal-close" onclick="closeTakeTestModal()">&times;</button>
+</div>
+<div class="modal-body">
+<div class="test-info-bar">
+<div class="test-info-item">
+<strong>Duration:</strong> <span id="test-duration-display">30 min</span>
+</div>
+<div class="test-info-item">
+<strong>Total Marks:</strong> <span id="test-marks-display">100</span>
+</div>
+<div class="test-info-item">
+<strong>Time Remaining:</strong> <span id="time-remaining">30:00</span>
+</div>
+</div>
+<form id="take-test-form" onsubmit="submitTest(event)">
+<div id="test-questions-container"></div>
+<div class="modal-actions">
+<button type="button" class="btn btn-secondary" onclick="closeTakeTestModal()">Cancel</button>
+<button type="submit" class="btn btn-primary">Submit Test</button>
+</div>
+</form>
+</div>
+</div>
+</div>
+
+<!-- Create Poll Modal -->
+<div id="create-poll-modal" class="modal">
+<div class="modal-content">
+<div class="modal-header">
+<h2>Create Drift Poll</h2>
+<button class="modal-close" onclick="closeCreatePollModal()">&times;</button>
+</div>
+<div class="modal-body">
+<form id="create-poll-form" onsubmit="createPoll(event)">
+<div class="form-field">
+<label>Poll Question</label>
+<input type="text" id="poll-question" class="form-control" placeholder="e.g., Do you understand recursion?" required>
+</div>
+<div class="form-field">
+<label>Topic/Concept</label>
+<input type="text" id="poll-topic" class="form-control" placeholder="e.g., Recursion, Data Structures" required>
+</div>
+<div class="form-field">
+<label>Poll Type</label>
+<select id="poll-type" class="form-control" required>
+<option value="understanding">Understanding Level (1-5)</option>
+<option value="yesno">Yes/No</option>
+<option value="multiple">Multiple Choice</option>
+<option value="difficulty">Difficulty Rating (Easy/Medium/Hard)</option>
+</select>
+</div>
+<div class="form-field" id="poll-options-field" style="display: none;">
+<label>Options (one per line)</label>
+<textarea id="poll-options" class="form-control" rows="4" placeholder="Enter options, one per line"></textarea>
+</div>
+<div class="form-field">
+<label>Duration (hours)</label>
+<input type="number" id="poll-duration" class="form-control" min="1" max="168" value="24" required>
+</div>
+<div class="modal-actions">
+<button type="button" class="btn btn-secondary" onclick="closeCreatePollModal()">Cancel</button>
+<button type="submit" class="btn btn-primary">Create Poll</button>
+</div>
+</form>
+</div>
+</div>
+</div>
+
+<!-- Take Poll Modal -->
+<div id="take-poll-modal" class="modal">
+<div class="modal-content">
+<div class="modal-header">
+<h2 id="take-poll-question">Poll Question</h2>
+<button class="modal-close" onclick="closeTakePollModal()">&times;</button>
+</div>
+<div class="modal-body">
+<div class="poll-info">
+<div class="poll-topic-badge" id="poll-topic-display"></div>
+<div class="poll-expires" id="poll-expires-display"></div>
+</div>
+<form id="take-poll-form" onsubmit="submitPollResponse(event)">
+<div id="poll-response-container"></div>
+<div class="modal-actions">
+<button type="button" class="btn btn-secondary" onclick="closeTakePollModal()">Cancel</button>
+<button type="submit" class="btn btn-primary">Submit Response</button>
+</div>
+</form>
+</div>
+</div>
+</div>
+
+<!-- Poll Results Modal -->
+<div id="poll-results-modal" class="modal">
+<div class="modal-content" style="max-width: 900px;">
+<div class="modal-header">
+<h2>Poll Results & Drift Analysis</h2>
+<button class="modal-close" onclick="closePollResultsModal()">&times;</button>
+</div>
+<div class="modal-body">
+<div id="poll-results-content"></div>
+</div>
+</div>
+</div>
+
+<!-- Create User Modal -->
+<div id="create-user-modal" class="modal">
+<div class="modal-content">
+<div class="modal-header">
+<h2>Add New User</h2>
+<button class="modal-close" onclick="closeCreateUserModal()">&times;</button>
+</div>
+<div class="modal-body">
+<form id="create-user-form" onsubmit="createUser(event)">
+<div class="form-field">
+<label>User Type</label>
+<select id="user-type" class="form-control" required onchange="toggleUserFields()">
+<option value="">Select User Type</option>
+<option value="student">Student</option>
+<option value="faculty">Faculty</option>
+</select>
+</div>
+<div class="form-field">
+<label>Full Name</label>
+<input type="text" id="user-name" class="form-control" placeholder="e.g., John Doe" required>
+</div>
+<div class="form-field" id="user-id-field">
+<label id="user-id-label">User ID</label>
+<input type="text" id="user-id" class="form-control" placeholder="Will be auto-generated" required>
+</div>
+<div class="form-field" id="department-field" style="display: none;">
+<label>Department</label>
+<select id="user-department" class="form-control">
+<option value="">Select Department</option>
+<option value="Computer Science">Computer Science</option>
+<option value="Mathematics">Mathematics</option>
+<option value="Physics">Physics</option>
+<option value="Engineering">Engineering</option>
+</select>
+</div>
+<div class="form-field" id="class-field" style="display: none;">
+<label>Class</label>
+<input type="text" id="user-class" class="form-control" placeholder="e.g., Computer Science - Year 2">
+</div>
+<div class="form-field">
+<label>Email</label>
+<input type="email" id="user-email" class="form-control" placeholder="e.g., john.doe@university.edu" required>
+</div>
+<div class="form-field">
+<label>Password</label>
+<input type="password" id="user-password" class="form-control" placeholder="Enter password" required minlength="6">
+</div>
+<div class="form-field">
+<label>Confirm Password</label>
+<input type="password" id="user-password-confirm" class="form-control" placeholder="Re-enter password" required minlength="6">
+</div>
+<div class="modal-actions">
+<button type="button" class="btn btn-secondary" onclick="closeCreateUserModal()">Cancel</button>
+<button type="submit" class="btn btn-primary">Create User</button>
+</div>
+</form>
+</div>
+</div>
+</div>
+
+<script>
+// Note: currentUserRole and currentUser are defined in app.js
+function handleLogin(event, role) {
+    event.preventDefault();
+    
+    // Get form data
+    const form = event.target;
+    let userId, userName, userDepartment;
+    
+    if (role === 'student') {
+        userId = form.querySelector('input[type="text"]').value.trim();
+        
+        // Default to using the entered value as the name
+        userName = userId || 'Student';
+        
+        // Try to find student in the students array
+        if (typeof students !== 'undefined' && students.length > 0) {
+            // Try exact ID match first
+            let student = students.find(s => s.id === userId);
+            
+            // If no exact match, try partial name match
+            if (!student) {
+                student = students.find(s => 
+                    s.name.toLowerCase().includes(userId.toLowerCase()) ||
+                    s.id.toLowerCase().includes(userId.toLowerCase())
+                );
+            }
+            
+            // If still no match, try to match by index (e.g., "1" matches "student-1")
+            if (!student && !isNaN(userId)) {
+                student = students.find(s => s.id === `student-${userId}`);
+            }
+            
+            if (student) {
+                userName = student.name;
+                userId = student.id;
+            } else {
+                // If not found, use the entered name as the student name
+                userName = userId || 'Student';
+                // Create a unique ID based on the entered name
+                userId = 'student-' + userName.toLowerCase().replace(/\s+/g, '-');
+            }
+        } else {
+            // No students loaded yet, use entered value as name
+            userName = userId || 'Student';
+            userId = 'student-' + (userName.toLowerCase().replace(/\s+/g, '-') || '1');
+        }
+        
+        console.log('Student login - Name:', userName, 'ID:', userId);
+    } else if (role === 'admin') {
+        // Admin login - no department field
+        userId = form.querySelector('input[type="text"]').value.trim();
+        userName = userId || 'Admin';
+    } else {
+        // Faculty login
+        userId = form.querySelector('input[type="text"]').value.trim();
+        userDepartment = form.querySelector('select').value;
+        userName = userId || 'Dr. Faculty';
+    }
+    
+    // Set currentUserRole and currentUser (defined in app.js)
+    window.currentUserRole = role;
+    
+    // Set current user based on role
+    if (role === 'student') {
+        window.currentUser = {
+            id: userId,
+            name: userName,
+            studentId: userId.replace('student-', 'STU00'),
+            class: 'Computer Science - Year 2'
+        };
+        console.log('Created currentUser:', window.currentUser);
+    } else if (role === 'admin') {
+        window.currentUser = {
+            id: userId,
+            name: userName,
+            role: 'admin'
+        };
+        console.log('Created admin user:', window.currentUser);
+    } else {
+        window.currentUser = {
+            id: userId,
+            name: userName,
+            department: userDepartment || 'Computer Science'
+        };
+    }
+    
+    document.getElementById('login-page').style.display = 'none';
+    document.getElementById('main-app').style.display = 'block';
+    
+    if (role === 'admin') {
+        // Admin has access to admin panel plus faculty features
+        document.getElementById('admin-layout').style.display = 'flex';
+        document.getElementById('faculty-layout').style.display = 'none';
+        document.getElementById('student-layout').style.display = 'none';
+        document.getElementById('student-header-info').style.display = 'none';
+        document.getElementById('faculty-header-info').style.display = 'flex';
+        document.getElementById('faculty-header-name').textContent = window.currentUser.name + ' (Admin)';
+        document.getElementById('sidebar-admin-name').textContent = window.currentUser.name;
+        
+        // Load test results from localStorage before rendering
+        loadTestResults();
+        
+        // Show admin dashboard view — ensure correct content areas are visible
+        document.getElementById('admin-content-area').style.display = 'block';
+        document.getElementById('faculty-content-area').style.display = 'none';
+        document.querySelectorAll('#admin-content-area .view').forEach(v => v.classList.remove('active'));
+        document.getElementById('admin-dashboard-view').classList.add('active');
+        
+        // Load and render data for admin
+        if (typeof renderDashboard === 'function') {
+            renderDashboard();
+            renderStudents();
+            renderAlerts();
+        }
+        
+        // Render admin-specific data
+        setTimeout(() => {
+            if (typeof renderAdminDashboard === 'function') {
+                renderAdminDashboard();
+            }
+        }, 500);
+        
+        // Set up admin sidebar navigation
+        document.querySelectorAll('#admin-layout .sidebar-nav-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                document.querySelectorAll('#admin-layout .sidebar-nav-btn').forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+                const view = this.dataset.view;
+                showAdminView(view);
+            });
+        });
+    } else if (role === 'faculty') {
+        document.getElementById('faculty-layout').style.display = 'flex';
+        document.getElementById('admin-layout').style.display = 'none';
+        document.getElementById('student-layout').style.display = 'none';
+        document.getElementById('student-header-info').style.display = 'none';
+        document.getElementById('faculty-header-info').style.display = 'flex';
+        document.getElementById('faculty-header-name').textContent = window.currentUser.name;
+        document.getElementById('sidebar-faculty-name').textContent = window.currentUser.name;
+        
+        // Load test results from localStorage before rendering
+        loadTestResults();
+        
+        // Show dashboard view
+        document.querySelectorAll('#faculty-content-area .view').forEach(v => v.classList.remove('active'));
+        document.getElementById('dashboard-view').classList.add('active');
+        
+        // Load and render data for faculty (call functions from app.js)
+        if (typeof renderDashboard === 'function') {
+            renderDashboard();
+            renderStudents();
+            renderAlerts();
+        }
+        
+        // Render recent test results for faculty
+        setTimeout(() => {
+            if (typeof renderRecentResults === 'function') {
+                renderRecentResults();
+            }
+        }, 500);
+        
+        // Set up faculty sidebar navigation
+        document.querySelectorAll('#faculty-layout .sidebar-nav-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                document.querySelectorAll('#faculty-layout .sidebar-nav-btn').forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+                const view = this.dataset.view;
+                showFacultyView(view);
+            });
+        });
+    } else {
+        document.getElementById('faculty-layout').style.display = 'none';
+        document.getElementById('admin-layout').style.display = 'none';
+        document.getElementById('faculty-header-info').style.display = 'none';
+        document.getElementById('student-header-info').style.display = 'flex';
+        document.getElementById('student-layout').style.display = 'flex';
+        
+        // Show the student view FIRST to ensure DOM is ready
+        showStudentView('student-dashboard');
+        
+        // Update names immediately AND with timeout for reliability
+        function updateStudentNames() {
+            if (window.currentUser) {
+                console.log('=== UPDATING STUDENT NAME ===');
+                console.log('Current user name:', window.currentUser.name);
+                console.log('Current user ID:', window.currentUser.id);
+                
+                // Update all student name elements
+                const studentNameElement = document.getElementById('student-name');
+                if (studentNameElement) {
+                    studentNameElement.textContent = window.currentUser.name;
+                    console.log('✓ Updated student-name to:', window.currentUser.name);
+                } else {
+                    console.error('✗ student-name element not found!');
+                }
+                
+                const studentDetailName = document.getElementById('student-detail-name');
+                if (studentDetailName) {
+                    studentDetailName.textContent = window.currentUser.name;
+                    console.log('✓ Updated student-detail-name');
+                }
+                
+                const menuStudentName = document.getElementById('menu-student-name');
+                if (menuStudentName) {
+                    menuStudentName.textContent = window.currentUser.name;
+                    console.log('✓ Updated menu-student-name');
+                } else {
+                    console.error('✗ menu-student-name element not found!');
+                }
+                
+                const menuStudentId = document.getElementById('menu-student-id');
+                if (menuStudentId) {
+                    menuStudentId.textContent = `Student ID: ${window.currentUser.studentId}`;
+                    console.log('✓ Updated menu-student-id');
+                }
+                
+                const profileName = document.getElementById('profile-name');
+                if (profileName) profileName.textContent = window.currentUser.name;
+
+                const sidebarName = document.getElementById('sidebar-student-name');
+                if (sidebarName) sidebarName.textContent = window.currentUser.name;
+
+                const sidebarId = document.getElementById('sidebar-student-id');
+                if (sidebarId) sidebarId.textContent = window.currentUser.studentId || window.currentUser.id;
+                
+                const studentIdElement = document.getElementById('student-id');
+                if (studentIdElement) {
+                    studentIdElement.textContent = window.currentUser.studentId;
+                    console.log('✓ Updated student-id');
+                }                
+                console.log('=== NAME UPDATE COMPLETE ===');
+            }
+        }
+        
+        // Try updating immediately
+        updateStudentNames();
+        
+        // Also try after a delay to ensure DOM is ready
+        setTimeout(updateStudentNames, 200);
+        setTimeout(updateStudentNames, 500);
+        
+        // Render student test results
+        setTimeout(() => {
+            // Always re-initialize tests to ensure fresh due dates
+            if (typeof initializeTests === 'function') {
+                initializeTests();
+            } else if (typeof renderStudentTests === 'function') {
+                renderStudentTests();
+            }
+            if (typeof renderStudentTestResults === 'function') {
+                renderStudentTestResults();
+            }
+            if (typeof renderStudentPerformanceChart === 'function') {
+                renderStudentPerformanceChart();
+            }
+        }, 500);
+    }
+}
+function logout() {
+    document.getElementById('login-page').style.display = 'flex';
+    document.getElementById('main-app').style.display = 'none';
+    currentUserRole = null;
+}
+function toggleProfileMenu() {
+    document.getElementById('profile-menu').classList.toggle('active');
+}
+function showStudentView(viewName) {
+    document.querySelectorAll('#student-layout .view').forEach(v => v.classList.remove('active'));
+    document.querySelectorAll('#student-layout .sidebar-nav-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById(viewName + '-view').classList.add('active');
+    const sidebarBtn = document.querySelector(`#student-layout .sidebar-nav-btn[data-view="${viewName}"]`);
+    if (sidebarBtn) sidebarBtn.classList.add('active');
+    // Refresh tests when navigating to schedule view
+    if (viewName === 'student-schedule' && typeof initializeTests === 'function') {
+        setTimeout(() => initializeTests(), 100);
+    }
+}
+function showFacultyView(viewName) {
+    document.querySelectorAll('#faculty-content-area .view').forEach(v => v.classList.remove('active'));
+    const target = document.getElementById(viewName + '-view') || document.getElementById(viewName);
+    if (target) target.classList.add('active');
+}
+function showAdminView(viewName) {
+    // Hide all views in both admin and faculty content areas
+    document.querySelectorAll('#admin-content-area .view, #faculty-content-area .view').forEach(v => v.classList.remove('active'));
+
+    // Shared faculty views that admin can also access
+    const sharedFacultyViews = ['students', 'alerts', 'polls', 'simulator', 'test-results'];
+    const isFacultyView = sharedFacultyViews.includes(viewName);
+
+    const target = document.getElementById(viewName + '-view') || document.getElementById(viewName);
+    if (target) target.classList.add('active');
+
+    // Show the correct content area
+    const adminArea = document.getElementById('admin-content-area');
+    const facultyArea = document.getElementById('faculty-content-area');
+    if (adminArea && facultyArea) {
+        if (isFacultyView) {
+            adminArea.style.display = 'none';
+            facultyArea.style.display = 'block';
+        } else {
+            adminArea.style.display = 'block';
+            facultyArea.style.display = 'none';
+        }
+    }
+
+    // Populate faculty view stats when shown
+    if (viewName === 'faculty-view' && typeof students !== 'undefined') {
+        renderAdminFacultyView();
+    }
+    // Refresh faculty data views
+    if (viewName === 'students' && typeof renderStudents === 'function') renderStudents();
+    if (viewName === 'alerts' && typeof renderAlerts === 'function') renderAlerts();
+    if (viewName === 'polls' && typeof renderPollsGrid === 'function') renderPollsGrid();
+}
+function renderAdminFacultyView() {
+    const critical = students.filter(s => s.status === 'critical').length;
+    const warning = students.filter(s => s.status === 'warning').length;
+    const healthy = students.filter(s => s.status === 'healthy').length;
+    const el = id => document.getElementById(id);
+    if (el('admin-fv-critical')) el('admin-fv-critical').textContent = critical;
+    if (el('admin-fv-warning')) el('admin-fv-warning').textContent = warning;
+    if (el('admin-fv-healthy')) el('admin-fv-healthy').textContent = healthy;
+    if (el('admin-fv-total')) el('admin-fv-total').textContent = students.length;
+
+    // Alerts list
+    const alertsContainer = el('admin-fv-alerts-list');
+    if (alertsContainer) {
+        alertsContainer.innerHTML = '';
+        const recent = (typeof alerts !== 'undefined' ? alerts : []).slice(0, 5);
+        if (recent.length === 0) {
+            alertsContainer.innerHTML = '<p class="empty-state-small">No recent alerts</p>';
+        } else {
+            recent.forEach(a => {
+                const item = document.createElement('div');
+                item.className = 'alert-item-small';
+                item.innerHTML = `
+                    <div class="alert-item-header">
+                        <span class="alert-item-name">${a.student_name}</span>
+                        <span class="alert-item-score">${(a.drift_score||0).toFixed(2)}</span>
+                    </div>
+                    <div class="alert-item-time">${typeof getTimeAgo === 'function' ? getTimeAgo(a.timestamp) : ''}</div>`;
+                alertsContainer.appendChild(item);
+            });
+        }
+    }
+
+    // Students list
+    const studentsContainer = el('admin-fv-students-list');
+    if (studentsContainer) {
+        studentsContainer.innerHTML = '';
+        students.forEach(s => {
+            const card = document.createElement('div');
+            card.className = 'student-card';
+            card.onclick = () => typeof openStudentModal === 'function' && openStudentModal(s);
+            const statusColor = s.status === 'critical' ? '#ef4444' : s.status === 'warning' ? '#f59e0b' : '#10b981';
+            card.innerHTML = `
+                <div class="student-card-header">
+                    <div class="student-avatar">${s.name.charAt(0)}</div>
+                    <div class="student-info">
+                        <div class="student-name">${s.name}</div>
+                        <div class="student-id">${s.id}</div>
+                    </div>
+                    <span class="status-badge status-${s.status}">${s.status}</span>
+                </div>
+                <div class="drift-score-bar">
+                    <div class="drift-score-fill" style="width:${(s.driftScore*100).toFixed(0)}%;background:${statusColor}"></div>
+                </div>
+                <div style="font-size:0.75rem;color:#6b7280;margin-top:0.25rem;">Drift: ${(s.driftScore*100).toFixed(0)}%</div>`;
+            studentsContainer.appendChild(card);
+        });
+    }
+
+    // Trend chart
+    if (el('adminFvTrendChart') && typeof Chart !== 'undefined') {
+        if (window._adminFvChart) window._adminFvChart.destroy();
+        const labels = classHistory.slice(-14).map(h => new Date(h.date).toLocaleDateString('en', {month:'short',day:'numeric'}));
+        const data = classHistory.slice(-14).map(h => (h.avgDriftScore * 100).toFixed(1));
+        window._adminFvChart = new Chart(el('adminFvTrendChart'), {
+            type: 'line',
+            data: {
+                labels,
+                datasets: [{
+                    label: 'Avg Drift Score %',
+                    data,
+                    borderColor: '#7c3aed',
+                    backgroundColor: 'rgba(124,58,237,0.1)',
+                    tension: 0.4,
+                    fill: true
+                }]
+            },
+            options: { responsive: true, plugins: { legend: { display: false } } }
+        });
+    }
+}
+function submitDoubt(event) {
+    event.preventDefault();
+    alert('Your question has been submitted! A teacher will respond soon.');
+    event.target.reset();
+}
+document.querySelectorAll('.login-tab').forEach(tab => {
+    tab.addEventListener('click', function() {
+        document.querySelectorAll('.login-tab').forEach(t => t.classList.remove('active'));
+        document.querySelectorAll('.login-form').forEach(f => f.classList.remove('active'));
+        this.classList.add('active');
+        const role = this.dataset.role;
+        document.getElementById(role + '-login').classList.add('active');
+    });
+});
+document.querySelectorAll('#student-layout .sidebar-nav-btn').forEach(btn => {
+    btn.addEventListener('click', function() {
+        const view = this.dataset.view;
+        showStudentView(view);
+    });
+});
+</script>
+<script src="app.js"></script>
+
+<!-- Dark Mode Toggle -->
+<button class="dark-mode-toggle" onclick="toggleDarkMode()" title="Toggle Dark Mode">
+<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+</svg>
+</button>
+
+<script>
+// Dark Mode Toggle
+function toggleDarkMode() {
+    document.body.classList.toggle('dark-mode');
+    const isDark = document.body.classList.contains('dark-mode');
+    localStorage.setItem('darkMode', isDark);
+    
+    // Update toggle icon
+    const toggle = document.querySelector('.dark-mode-toggle svg');
+    if (isDark) {
+        toggle.innerHTML = '<circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>';
+    } else {
+        toggle.innerHTML = '<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>';
+    }
+}
+
+// Load dark mode preference
+if (localStorage.getItem('darkMode') === 'true') {
+    document.body.classList.add('dark-mode');
+}
+
+// Add number counter animation
+function animateCounter(element, target, duration = 1000) {
+    const start = 0;
+    const increment = target / (duration / 16);
+    let current = start;
+    
+    const timer = setInterval(() => {
+        current += increment;
+        if (current >= target) {
+            element.textContent = Math.round(target);
+            clearInterval(timer);
+        } else {
+            element.textContent = Math.round(current);
+        }
+    }, 16);
+}
+
+// Role switching functionality
+document.addEventListener('DOMContentLoaded', () => {
+    // Set up role button switching
+    const roleButtons = document.querySelectorAll('.role-btn');
+    const loginForms = document.querySelectorAll('.login-form-new');
+    
+    roleButtons.forEach(btn => {
+        btn.addEventListener('click', function() {
+            // Remove active class from all buttons
+            roleButtons.forEach(b => b.classList.remove('active'));
+            // Add active class to clicked button
+            this.classList.add('active');
+            
+            // Get the role from data attribute
+            const role = this.dataset.role;
+            
+            // Hide all login forms
+            loginForms.forEach(form => form.classList.remove('active'));
+            
+            // Show the selected role's login form
+            const targetForm = document.getElementById(`${role}-login-new`);
+            if (targetForm) {
+                targetForm.classList.add('active');
+            }
+        });
+    });
+    
+    // Animate counters on page load
+    const counters = document.querySelectorAll('.stat-value, .poll-stat-value');
+    counters.forEach(counter => {
+        const target = parseInt(counter.textContent) || 0;
+        if (target > 0) {
+            animateCounter(counter, target);
+        }
+    });
+});
+
+// Add ripple effect to buttons
+document.addEventListener('click', function(e) {
+    if (e.target.classList.contains('btn') || e.target.classList.contains('nav-btn')) {
+        const ripple = document.createElement('span');
+        ripple.classList.add('ripple-effect');
+        ripple.style.left = e.offsetX + 'px';
+        ripple.style.top = e.offsetY + 'px';
+        e.target.appendChild(ripple);
+        
+        setTimeout(() => ripple.remove(), 600);
+    }
+});
+</script>
+
+<script>
+// Particle canvas animation for login page
+(function() {
+    const canvas = document.getElementById('particle-canvas');
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    let W, H, particles = [];
+
+    function resize() {
+        W = canvas.width = window.innerWidth;
+        H = canvas.height = window.innerHeight;
+    }
+    resize();
+    window.addEventListener('resize', resize);
+
+    const COLORS = ['rgba(124,58,237,', 'rgba(219,39,119,', 'rgba(6,182,212,', 'rgba(245,158,11,'];
+    for (let i = 0; i < 70; i++) {
+        particles.push({
+            x: Math.random() * window.innerWidth,
+            y: Math.random() * window.innerHeight,
+            r: Math.random() * 2.5 + 0.5,
+            dx: (Math.random() - 0.5) * 0.4,
+            dy: (Math.random() - 0.5) * 0.4,
+            color: COLORS[Math.floor(Math.random() * COLORS.length)],
+            alpha: Math.random() * 0.5 + 0.2
+        });
+    }
+
+    function draw() {
+        ctx.clearRect(0, 0, W, H);
+        particles.forEach(p => {
+            ctx.beginPath();
+            ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+            ctx.fillStyle = p.color + p.alpha + ')';
+            ctx.fill();
+            p.x += p.dx; p.y += p.dy;
+            if (p.x < 0 || p.x > W) p.dx *= -1;
+            if (p.y < 0 || p.y > H) p.dy *= -1;
+        });
+        // Draw connecting lines
+        for (let i = 0; i < particles.length; i++) {
+            for (let j = i + 1; j < particles.length; j++) {
+                const dist = Math.hypot(particles[i].x - particles[j].x, particles[i].y - particles[j].y);
+                if (dist < 120) {
+                    ctx.beginPath();
+                    ctx.moveTo(particles[i].x, particles[i].y);
+                    ctx.lineTo(particles[j].x, particles[j].y);
+                    ctx.strokeStyle = 'rgba(124,58,237,' + (0.12 * (1 - dist / 120)) + ')';
+                    ctx.lineWidth = 0.6;
+                    ctx.stroke();
+                }
+            }
+        }
+        requestAnimationFrame(draw);
+    }
+    draw();
+})();
+</script>
+
+</body>
+</html>
